@@ -120,6 +120,25 @@
     </div>
   </div>
 
+  <!-- Floating Mobile Spatial HUD Pill & Chapter Drawer -->
+  <button type="button" class="mobile-spatial-pill" id="mobile-spatial-pill" aria-label="Ver Índice de Capítulos" aria-expanded="false">
+    <span class="mobile-spatial-dot" aria-hidden="true"></span>
+    <span id="mobile-spatial-text">00 · PRÓLOGO · +2.320M</span>
+    <span class="mobile-spatial-chevron" aria-hidden="true">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+    </span>
+  </button>
+
+  <div class="mobile-chapter-drawer" id="mobile-chapter-drawer" aria-hidden="true">
+    <a href="#chapter-00" class="mobile-chapter-link"><span>00 · Prólogo</span><span>+2.320 m</span></a>
+    <a href="#chapter-01" class="mobile-chapter-link"><span>01 · Norte Mineral</span><span>+2.320 m</span></a>
+    <a href="#chapter-02" class="mobile-chapter-link"><span>02 · Selva Misionera</span><span>+195 m</span></a>
+    <a href="#chapter-03" class="mobile-chapter-link"><span>03 · Cañones de Cuyo</span><span>+1.300 m</span></a>
+    <a href="#chapter-04" class="mobile-chapter-link"><span>04 · Reinos de Hielo</span><span>+180 m</span></a>
+    <a href="#chapter-05" class="mobile-chapter-link"><span>05 · Fin del Mundo</span><span>+0 m</span></a>
+    <a href="#commission" class="mobile-chapter-link"><span>06 · Atelier Commission</span><span>Atelier</span></a>
+  </div>
+
   <!-- Main Art Book Content Flow -->
   <main id="monograph-flow">
 
@@ -218,9 +237,9 @@
           <article class="editorial-card" data-dossier="purmamarca">
             <div class="card-media-frame">
               <img src="images/arg-norte-1.webp" alt="Purmamarca y Cerro de los Siete Colores en Jujuy" class="card-img" loading="lazy">
-              <div class="media-center-trigger" aria-label="Inspeccionar Placa">
+              <button type="button" class="media-center-trigger" aria-label="Inspeccionar Placa I Purmamarca">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
-              </div>
+              </button>
             </div>
             <div class="card-content">
               <span class="card-tag">PLACA I · PURMAMARCA</span>
@@ -234,9 +253,9 @@
           <article class="editorial-card" data-dossier="salinas">
             <div class="card-media-frame">
               <img src="images/arg-norte-2.webp" alt="Salinas Grandes en Jujuy y Salta" class="card-img" loading="lazy">
-              <div class="media-center-trigger" aria-label="Inspeccionar Placa">
+              <button type="button" class="media-center-trigger" aria-label="Inspeccionar Placa II Salinas Grandes">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
-              </div>
+              </button>
             </div>
             <div class="card-content">
               <span class="card-tag">PLACA II · SALINAS GRANDES</span>
@@ -292,9 +311,9 @@
           <article class="editorial-card" data-dossier="iguazu">
             <div class="card-media-frame">
               <img src="images/arg-litoral-1.webp" alt="Garganta del Diablo en Cataratas del Iguazú" class="card-img" loading="lazy">
-              <div class="media-center-trigger" aria-label="Inspeccionar Placa">
+              <button type="button" class="media-center-trigger" aria-label="Inspeccionar Placa III Iguazú">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
-              </div>
+              </button>
             </div>
             <div class="card-content">
               <span class="card-tag">PLACA III · IGUAZÚ</span>
@@ -308,9 +327,9 @@
           <article class="editorial-card" data-dossier="yaboti">
             <div class="card-media-frame">
               <img src="images/arg-litoral-2.webp" alt="Ecolodge en la Selva Misionera" class="card-img" loading="lazy">
-              <div class="media-center-trigger" aria-label="Inspeccionar Placa">
+              <button type="button" class="media-center-trigger" aria-label="Inspeccionar Placa IV Yabotí">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
-              </div>
+              </button>
             </div>
             <div class="card-content">
               <span class="card-tag">PLACA IV · YABOTÍ</span>
@@ -366,9 +385,9 @@
           <article class="editorial-card" data-dossier="talampaya">
             <div class="card-media-frame">
               <img src="images/arg-cuyo-1.webp" alt="Cañón de Talampaya en La Rioja y San Juan" class="card-img" loading="lazy">
-              <div class="media-center-trigger" aria-label="Inspeccionar Placa">
+              <button type="button" class="media-center-trigger" aria-label="Inspeccionar Placa V Talampaya">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
-              </div>
+              </button>
             </div>
             <div class="card-content">
               <span class="card-tag">PLACA V · TALAMPAYA</span>
@@ -382,9 +401,9 @@
           <article class="editorial-card" data-dossier="catamarca">
             <div class="card-media-frame">
               <img src="images/arg-cuyo-2.webp" alt="Campo de Piedra Pómez en Catamarca" class="card-img" loading="lazy">
-              <div class="media-center-trigger" aria-label="Inspeccionar Placa">
+              <button type="button" class="media-center-trigger" aria-label="Inspeccionar Placa VI Campo de Piedra Pómez">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
-              </div>
+              </button>
             </div>
             <div class="card-content">
               <span class="card-tag">PLACA VI · ANTOFAGASTA</span>
@@ -440,9 +459,9 @@
           <article class="editorial-card" data-dossier="fitzroy">
             <div class="card-media-frame">
               <img src="images/arg-patagonia-1.webp" alt="Monte Fitz Roy y Laguna de los Tres en El Chaltén" class="card-img" loading="lazy">
-              <div class="media-center-trigger" aria-label="Inspeccionar Placa">
+              <button type="button" class="media-center-trigger" aria-label="Inspeccionar Placa VII Fitz Roy">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
-              </div>
+              </button>
             </div>
             <div class="card-content">
               <span class="card-tag">PLACA VII · EL CHALTÉN</span>
@@ -456,9 +475,9 @@
           <article class="editorial-card" data-dossier="peritomoreno">
             <div class="card-media-frame">
               <img src="images/arg-patagonia-2.webp" alt="Glaciar Perito Moreno en El Calafate" class="card-img" loading="lazy">
-              <div class="media-center-trigger" aria-label="Inspeccionar Placa">
+              <button type="button" class="media-center-trigger" aria-label="Inspeccionar Placa VIII Perito Moreno">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
-              </div>
+              </button>
             </div>
             <div class="card-content">
               <span class="card-tag">PLACA VIII · PERITO MORENO</span>
@@ -514,9 +533,9 @@
           <article class="editorial-card" data-dossier="ushuaia">
             <div class="card-media-frame">
               <img src="images/arg-ushuaia-1.webp" alt="Faro Les Éclaireurs en el Canal Beagle Ushuaia" class="card-img" loading="lazy">
-              <div class="media-center-trigger" aria-label="Inspeccionar Placa">
+              <button type="button" class="media-center-trigger" aria-label="Inspeccionar Placa IX Faro Les Éclaireurs">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
-              </div>
+              </button>
             </div>
             <div class="card-content">
               <span class="card-tag">PLACA IX · CANAL BEAGLE</span>
@@ -530,9 +549,9 @@
           <article class="editorial-card" data-dossier="lapataia">
             <div class="card-media-frame">
               <img src="images/arg-ushuaia-2.webp" alt="Bahía Lapataia en Tierra del Fuego" class="card-img" loading="lazy">
-              <div class="media-center-trigger" aria-label="Inspeccionar Placa">
+              <button type="button" class="media-center-trigger" aria-label="Inspeccionar Placa X Bahía Lapataia">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
-              </div>
+              </button>
             </div>
             <div class="card-content">
               <span class="card-tag">PLACA X · BAHÍA LAPATAIA</span>
@@ -693,6 +712,50 @@
       </button>
       <div class="modal-body" id="modal-body-content">
         <!-- Content injected dynamically via editorial.js -->
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Luxury Atelier Confirmation Voucher Modal Dialog -->
+  <dialog id="voucher-modal" class="dossier-dialog" aria-labelledby="voucher-title">
+    <div class="modal-surface voucher-surface">
+      <button class="modal-close-btn" id="voucher-close" type="button" aria-label="Cerrar Certificado de Comisión">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+      <div class="voucher-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        <span>Expedición Privada Registrada · Atelier Nomad & Nook</span>
+      </div>
+      <h2 id="voucher-title" class="voucher-title">Certificado de Comisión Cartográfica</h2>
+      <p class="voucher-subtitle">
+        Su solicitud ha sido asentada en el registro del Atelier. Un curador cartográfico iniciará el trazado confidencial de su travesía en menos de 24 horas.
+      </p>
+      <div class="voucher-code-block">
+        <div class="voucher-field">
+          <span class="voucher-field-label">Referencia Atelier</span>
+          <span class="voucher-field-val" id="voucher-ref-code">#NN-ARG-2026-8492</span>
+        </div>
+        <div class="voucher-field">
+          <span class="voucher-field-label">Titular de la Comisión</span>
+          <span class="voucher-field-val" id="voucher-client-name">—</span>
+        </div>
+        <div class="voucher-field">
+          <span class="voucher-field-label">Región / Travesía</span>
+          <span class="voucher-field-val" id="voucher-region-name">—</span>
+        </div>
+        <div class="voucher-field">
+          <span class="voucher-field-label">Fecha de Registro</span>
+          <span class="voucher-field-val" id="voucher-date-val">2026 · Monografía Austral VIII</span>
+        </div>
+      </div>
+      <div class="voucher-actions">
+        <a href="https://wa.me/5491100000000?text=Hola%20Atelier%20Nomad%20%26%20Nook,%20tengo%20la%20referencia%20de%20comisi%C3%B3n" target="_blank" rel="noopener noreferrer" class="btn-concierge-direct">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          <span>Contacto Directo con Concierge VIP</span>
+        </a>
+        <button type="button" class="btn-monograph" id="voucher-dismiss-btn">
+          <span>Cerrar y Continuar Exploración</span>
+        </button>
       </div>
     </div>
   </dialog>

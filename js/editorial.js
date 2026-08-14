@@ -9,6 +9,7 @@
   // Archival Dossier Master Records for Argentina Monograph
   const dossiers = {
     purmamarca: {
+      region: 'norte',
       tag: 'PLACA I · JUJUY · NORTE ANDINO',
       title: 'Cerro de los Siete Colores & Purmamarca',
       meta: 'Altitud: +2.320 m · Coordenadas: 23°44′48″S 65°29′57″W · Siglo XVII',
@@ -21,6 +22,7 @@
       `
     },
     salinas: {
+      region: 'norte',
       tag: 'PLACA II · JUJUY & SALTA · PUNA',
       title: 'Salinas Grandes & El Espejo de Salitre',
       meta: 'Altitud: +3.450 m · Superficie: 212 km² · Cuenca Endorreica',
@@ -32,6 +34,7 @@
       `
     },
     iguazu: {
+      region: 'litoral',
       tag: 'PLACA III · MISIONES · PARQUE NACIONAL IGUAZÚ',
       title: 'Garganta del Diablo & Saltos Mayores',
       meta: 'Altitud: +195 m · Caudal: 1.500 m³/s · Patrimonio Mundial UNESCO',
@@ -43,6 +46,7 @@
       `
     },
     yaboti: {
+      region: 'litoral',
       tag: 'PLACA IV · MISIONES · RESERVA DE BIOSFERA YABOTÍ',
       title: 'Ecolodge en la Selva Virgen Paranaense',
       meta: 'Reserva Natural: 250.000 ha · Río Yabotí · Bosque Atlántico',
@@ -54,6 +58,7 @@
       `
     },
     talampaya: {
+      region: 'cuyo',
       tag: 'PLACA V · LA RIOJA & SAN JUAN · CUYO',
       title: 'Farallones del Cañón de Talampaya',
       meta: 'Altitud: +1.300 m · Muros: 150 m · Yacimiento Fósil Triásico',
@@ -65,6 +70,7 @@
       `
     },
     catamarca: {
+      region: 'cuyo',
       tag: 'PLACA VI · CATAMARCA · ANTOFAGASTA DE LA SIERRA',
       title: 'Campo de Piedra Pómez & Desierto Puneño',
       meta: 'Altitud: +3.050 m · Formación: Erupción Volcán Robledo · Cordillera Andina',
@@ -76,6 +82,7 @@
       `
     },
     fitzroy: {
+      region: 'patagonia',
       tag: 'PLACA VII · SANTA CRUZ · EL CHALTÉN',
       title: 'Monte Fitz Roy & Laguna de los Tres',
       meta: 'Altitud: +3.405 m · Parque Nacional Los Glaciares · Aguja Granítica',
@@ -87,6 +94,7 @@
       `
     },
     peritomoreno: {
+      region: 'patagonia',
       tag: 'PLACA VIII · SANTA CRUZ · EL CALAFATE',
       title: 'Glaciar Perito Moreno & Campo de Hielo Sur',
       meta: 'Superficie: 250 km² · Frente: 5 km · Altura Frontal: 70 m',
@@ -98,9 +106,10 @@
       `
     },
     ushuaia: {
+      region: 'ushuaia',
       tag: 'PLACA IX · TIERRA DEL FUEGO · USHUAIA',
       title: 'Faro Les Éclaireurs & Canal Beagle',
-      meta: 'Coordenadas: 54°52′S 68°05′W · Construcción: 1920 · Canal Marítimo Austral',
+      meta: 'Coordenadas: 54°52′S 68°05′W · Construcción: 1920 · Canal MarMaritime Austral',
       img: 'images/arg-ushuaia-1.webp',
       body: `
         <p>En los islotes rocosos del Canal Beagle, la torre troncocónica de diez metros con franjas rojas y blancas del Faro Les Éclaireurs señala el paso de navegantes entre los océanos Atlántico y Pacífico.</p>
@@ -109,6 +118,7 @@
       `
     },
     lapataia: {
+      region: 'ushuaia',
       tag: 'PLACA X · TIERRA DEL FUEGO · PARQUE NACIONAL',
       title: 'Bahía Lapataia & El Fin del Camino',
       meta: 'Extremo Austral de la Ruta Nacional 3 · Km 3.079 · Fiordo Subantártico',
@@ -141,11 +151,24 @@
           <div class="modal-dossier-meta">${data.meta}</div>
           <div class="modal-dossier-copy">${data.body}</div>
           <div class="modal-dossier-actions">
-            <a href="#commission" class="btn-monograph" onclick="document.getElementById('dossier-modal').close()">Comisionar Esta Travesía</a>
+            <a href="#commission" class="btn-monograph dossier-commission-cta" data-dossier-region="${data.region || 'norte'}">Comisionar Esta Travesía</a>
           </div>
         </div>
       </div>
     `;
+
+    // Connect Dossier CTA to pre-select region in the commission form
+    const cta = modalContent.querySelector('.dossier-commission-cta');
+    if (cta) {
+      cta.addEventListener('click', () => {
+        const reg = cta.getAttribute('data-dossier-region');
+        const regionSelect = document.getElementById('client-region');
+        if (regionSelect && reg) {
+          regionSelect.value = reg;
+        }
+        modal.close();
+      });
+    }
 
     modal.showModal();
   }
@@ -157,7 +180,7 @@
     });
   }
 
-  // Attach card click handlers
+  // Attach card and trigger click handlers
   document.querySelectorAll('.editorial-card').forEach(card => {
     card.addEventListener('click', () => {
       const id = card.getAttribute('data-dossier');
@@ -165,16 +188,31 @@
     });
   });
 
-  // Commission Form Controller
+  document.querySelectorAll('.media-center-trigger').forEach(trigger => {
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const card = trigger.closest('.editorial-card');
+      if (card) {
+        const id = card.getAttribute('data-dossier');
+        if (id) openDossier(id);
+      }
+    });
+  });
+
+  // Commission Form & Luxury Atelier Voucher Controller
   const form = document.getElementById('commission-form');
   const formStatus = document.getElementById('form-status');
+  const voucherModal = document.getElementById('voucher-modal');
+  const voucherCloseBtn = document.getElementById('voucher-close');
+  const voucherDismissBtn = document.getElementById('voucher-dismiss-btn');
 
   if (form && formStatus) {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       const name = form.elements['name']?.value?.trim();
       const email = form.elements['email']?.value?.trim();
-      const region = form.elements['region']?.value;
+      const regionSelect = form.elements['region'];
+      const regionText = regionSelect ? regionSelect.options[regionSelect.selectedIndex].text : 'Travesía por Argentina';
 
       if (!name || !email) {
         formStatus.textContent = 'Por favor complete su nombre y correo para procesar la comisión.';
@@ -182,9 +220,70 @@
         return;
       }
 
-      formStatus.textContent = `Estimado/a ${name}, su solicitud para la expedición por Argentina ha sido recibida en el Atelier. Un curador cartográfico se comunicará con usted en menos de 24 horas.`;
+      const randomDigits = Math.floor(1000 + Math.random() * 9000);
+      const refCode = `#NN-ARG-2026-${randomDigits}`;
+
+      if (voucherModal) {
+        const refEl = document.getElementById('voucher-ref-code');
+        const clientEl = document.getElementById('voucher-client-name');
+        const regEl = document.getElementById('voucher-region-name');
+        const dateEl = document.getElementById('voucher-date-val');
+
+        if (refEl) refEl.textContent = refCode;
+        if (clientEl) clientEl.textContent = name;
+        if (regEl) regEl.textContent = regionText;
+        if (dateEl) dateEl.textContent = new Date().toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' });
+
+        voucherModal.showModal();
+      }
+
+      formStatus.textContent = `Estimado/a ${name}, su solicitud (${refCode}) para la expedición por Argentina ha sido recibida en el Atelier.`;
       formStatus.className = 'form-status is-success';
       form.reset();
+    });
+  }
+
+  if (voucherModal) {
+    if (voucherCloseBtn) {
+      voucherCloseBtn.addEventListener('click', () => voucherModal.close());
+    }
+    if (voucherDismissBtn) {
+      voucherDismissBtn.addEventListener('click', () => voucherModal.close());
+    }
+    voucherModal.addEventListener('click', (e) => {
+      if (e.target === voucherModal) voucherModal.close();
+    });
+  }
+
+  // Mobile Spatial HUD Pill & Drawer Controller
+  const mobilePill = document.getElementById('mobile-spatial-pill');
+  const mobileDrawer = document.getElementById('mobile-chapter-drawer');
+
+  if (mobilePill && mobileDrawer) {
+    mobilePill.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = mobilePill.classList.toggle('is-open');
+      mobileDrawer.classList.toggle('is-open', isOpen);
+      mobilePill.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      mobileDrawer.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+    });
+
+    mobileDrawer.querySelectorAll('.mobile-chapter-link').forEach(link => {
+      link.addEventListener('click', () => {
+        mobilePill.classList.remove('is-open');
+        mobileDrawer.classList.remove('is-open');
+        mobilePill.setAttribute('aria-expanded', 'false');
+        mobileDrawer.setAttribute('aria-hidden', 'true');
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!mobilePill.contains(e.target) && !mobileDrawer.contains(e.target)) {
+        mobilePill.classList.remove('is-open');
+        mobileDrawer.classList.remove('is-open');
+        mobilePill.setAttribute('aria-expanded', 'false');
+        mobileDrawer.setAttribute('aria-hidden', 'true');
+      }
     });
   }
 

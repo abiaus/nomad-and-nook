@@ -145,7 +145,8 @@ body {
   background-repeat: repeat;
 }
 
-/* MengTo Progressive Stepped Blur Masks *.gradient-blur-top {
+/* MengTo Progressive Stepped Blur Masks */
+.gradient-blur-top {
   position: fixed;
   z-index: 2;
   inset: 0 0 auto 0;
@@ -164,7 +165,6 @@ body {
   position: relative;
   z-index: 10;
   width: 100%;
-}
 }
 
 /* Typographic Display Classes */
@@ -255,83 +255,10 @@ body {
   opacity: 1;
 }
 
-/* Custom Fine-Pointer Magnetic Cursor */
+/* Fine-Pointer Hide Native Cursor */
 @media (pointer: fine) {
-  body {
+  body, a, button, input, select, textarea {
     cursor: none;
-  }
-
-  a, button, input, select, textarea {
-    cursor: none;
-  }
-
-  #custom-cursor {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 9999;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  .cursor-dot {
-    position: absolute;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background-color: var(--sand-100);
-    margin-left: -3px;
-    margin-top: -3px;
-    will-change: transform;
-  }
-
-  .cursor-ring {
-    position: absolute;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    border: 1px solid var(--terracotta-500);
-    margin-left: -22px;
-    margin-top: -22px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: width 0.35s var(--ease-out),
-                height 0.35s var(--ease-out),
-                margin 0.35s var(--ease-out),
-                background-color 0.35s var(--ease-out),
-                border-color 0.35s var(--ease-out);
-    will-change: transform;
-  }
-
-  .cursor-label {
-    font-family: var(--font-mono);
-    font-size: 0.55rem;
-    letter-spacing: 0.2em;
-    color: var(--bone);
-    opacity: 0;
-    transition: opacity 0.25s ease;
-  }
-
-  #custom-cursor.hovering-interactive .cursor-ring {
-    width: 68px;
-    height: 68px;
-    margin-left: -34px;
-    margin-top: -34px;
-    background-color: rgba(200, 90, 59, 0.22);
-    border-color: var(--sand-200);
-    backdrop-filter: blur(4px);
-  }
-
-  #custom-cursor.hovering-interactive .cursor-label {
-    opacity: 1;
-  }
-}
-
-@media (pointer: coarse) {
-  #custom-cursor {
-    display: none !important;
   }
 }
 

@@ -75,9 +75,9 @@
         window.NomadExperience.updateWorldState(state);
       }
 
-      // 2. Update Destination Rail Progress Fill
+      // 2. Update Destination Rail Progress Fill via GPU Composited Transform
       if (railProgressBar) {
-        railProgressBar.style.height = (state.normalizedSmooth * 100) + '%';
+        railProgressBar.style.transform = 'scaleY(' + state.normalizedSmooth + ')';
       }
 
       // 3. Update HUD Data & Auto-hide at Colophon
@@ -103,6 +103,14 @@
       navLinks.forEach((link, i) => {
         link.classList.toggle('active', i === index - 1);
       });
+
+      // Synchronize Mobile Spatial Pill Readout
+      const mobileSpatialText = document.getElementById('mobile-spatial-text');
+      if (mobileSpatialText && biomesData[index]) {
+        const b = biomesData[index];
+        const shortName = b.name.split('&')[0].trim();
+        mobileSpatialText.textContent = `0${index} · ${shortName} · ${b.elev}`;
+      }
 
       // Synchronize Audio Biome Synthesizer
       if (window.NomadAudio && typeof window.NomadAudio.setBiomeMix === 'function') {
