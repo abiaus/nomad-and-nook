@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nomad & Nook — Travesía Austral: Monografía Editorial de Argentina</title>
+  <meta name="description" content="Una monografía cinematográfica de alta costura a través de la geografía argentina: desde la aridez mineral de Jujuy y Salta, la selva misionera, los cañones de Cuyo, hasta los glaciares patagónicos y Ushuaia en el Fin del Mundo.">
+
+  <!-- Local CSS Architecture (Zero External CDN Calls) -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/chapters.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+  <!-- Fixed Photorealistic Background Video Stage Layer -->
+  <div id="video-background-stage" aria-hidden="true">
+    <video class="bg-video-track is-active" id="video-track-0" poster="images/arg-norte-1.webp" autoplay loop muted playsinline preload="auto">
+      <source src="videos/video-norte.mp4" type="video/mp4">
+    </video>
+    <video class="bg-video-track" id="video-track-1" poster="images/arg-litoral-1.webp" loop muted playsinline preload="metadata">
+      <source src="videos/video-litoral.mp4" type="video/mp4">
+    </video>
+    <video class="bg-video-track" id="video-track-2" poster="images/arg-cuyo-1.webp" loop muted playsinline preload="metadata">
+      <source src="videos/video-cuyo.mp4" type="video/mp4">
+    </video>
+    <video class="bg-video-track" id="video-track-3" poster="images/arg-patagonia-1.webp" loop muted playsinline preload="metadata">
+      <source src="videos/video-patagonia.mp4" type="video/mp4">
+    </video>
+    <video class="bg-video-track" id="video-track-4" poster="images/arg-ushuaia-1.webp" loop muted playsinline preload="metadata">
+      <source src="videos/video-ushuaia.mp4" type="video/mp4">
+    </video>
+  </div>
+
+  <!-- Fixed Three.js Environmental WebGL Canvas Layer (Living Atmosphere Overlay) -->
+  <canvas id="webgl-canvas" aria-hidden="true"></canvas>
+
+  <!-- Vignette & Film Grain Overlay Layers -->
+  <div class="vignette-overlay" aria-hidden="true"></div>
+  <div class="noise-overlay" aria-hidden="true"></div>
+
+  <!-- MengTo Progressive Blur Stepped Masks -->
+  <div class="gradient-blur-top" aria-hidden="true">
+    <div></div><div></div><div></div><div></div><div></div><div></div>
+  </div>
+  <div class="gradient-blur-bottom" aria-hidden="true">
+    <div></div><div></div><div></div><div></div>
+  </div>
+
+  <!-- Custom Magnetic Cursor for Fine Pointers -->
+  <div id="custom-cursor" aria-hidden="true">
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring">
+      <span class="cursor-label"></span>
+    </div>
+  </div>
+
+  <!-- Top Navigation Masthead -->
+  <header class="masthead-nav">
+    <a href="#chapter-00" class="brand-mark" aria-label="Nomad and Nook Inicio">
+      <span class="brand-logo">NOMAD & NOOK</span>
+      <span class="brand-tagline">TRAVESÍA AUSTRAL · ARGENTINA</span>
+    </a>
+
+    <nav aria-label="Navegación Principal">
+      <ul class="nav-links">
+        <li><a href="#chapter-01" class="nav-link">01 · Norte</a></li>
+        <li><a href="#chapter-02" class="nav-link">02 · Litoral</a></li>
+        <li><a href="#chapter-03" class="nav-link">03 · Cuyo & Puna</a></li>
+        <li><a href="#chapter-04" class="nav-link">04 · Patagonia</a></li>
+        <li><a href="#chapter-05" class="nav-link">05 · Fin del Mundo</a></li>
+        <li><a href="#curated-journeys" class="nav-link">Travesías</a></li>
+        <li><a href="#commission" class="nav-link">Comisión</a></li>
+      </ul>
+    </nav>
+
+    <div class="nav-actions">
+      <button class="audio-toggle-btn" id="audio-toggle" type="button" aria-label="Alternar Paisaje Sonoro">
+        <span class="audio-label">PAISAJE SONORO</span>
+        <div class="audio-wave-anim" aria-hidden="true">
+          <span class="audio-bar"></span>
+          <span class="audio-bar"></span>
+          <span class="audio-bar"></span>
+        </div>
+      </button>
+
+      <a href="#commission" class="btn-monograph">Comisión Privada</a>
+    </div>
+  </header>
+
+  <!-- Right Margin Destination Navigation Rail -->
+  <aside class="destination-rail" aria-label="Progreso del Monográfico">
+    <div class="rail-track" aria-hidden="true">
+      <div class="rail-progress-bar"></div>
+    </div>
+    <ul class="rail-items">
+      <li><a href="#chapter-00" class="rail-item is-active"><span class="rail-dot"></span> 00 · PRÓLOGO</a></li>
+      <li><a href="#chapter-01" class="rail-item"><span class="rail-dot"></span> 01 · EL NORTE MINERAL</a></li>
+      <li><a href="#chapter-02" class="rail-item"><span class="rail-dot"></span> 02 · SELVA MISIONERA</a></li>
+      <li><a href="#chapter-03" class="rail-item"><span class="rail-dot"></span> 03 · CAÑONES DE CUYO</a></li>
+      <li><a href="#chapter-04" class="rail-item"><span class="rail-dot"></span> 04 · REINOS DE HIELO</a></li>
+      <li><a href="#chapter-05" class="rail-item"><span class="rail-dot"></span> 05 · FIN DEL MUNDO</a></li>
+      <li><a href="#curated-journeys" class="rail-item"><span class="rail-dot"></span> 06 · ATELIER</a></li>
+    </ul>
+  </aside>
+
+  <!-- Bottom Left Live Cartographic Coordinates HUD -->
+  <div class="live-coords-hud" aria-live="polite" aria-atomic="true">
+    <div class="hud-item">
+      <span class="hud-label">COORDENADAS</span>
+      <span class="hud-val" id="hud-coords-val">23°44′48″S 65°29′57″W</span>
+    </div>
+    <div class="hud-item">
+      <span class="hud-label">ELEVACIÓN</span>
+      <span class="hud-val" id="hud-elev-val">+2.320 m</span>
+    </div>
+    <div class="hud-item">
+      <span class="hud-label">BIOMA GEOGRÁFICO</span>
+      <span class="hud-val" id="hud-biome-val">Puna Jujeña & Quebrada</span>
+    </div>
+  </div>
+
+  <!-- Main Art Book Content Flow -->
+  <main id="monograph-flow">
+
+    <!-- Hero Section / Prologue (Chapter 00) -->
+    <section class="hero-section" id="chapter-00" data-chapter-index="0">
+      <div class="hero-main-content">
+        <div class="hero-issue-badge">
+          <span class="dot"></span>
+          <span class="issue-text">MONOGRAFÍA VOL. VIII · TRAVESÍA AUSTRAL</span>
+        </div>
+
+        <h1 class="hero-title" aria-label="ARGENTINA · LA RUTA INFINITA">
+          <span class="hero-line"><span class="word-split">ARGENTINA</span></span>
+          <span class="hero-line"><span class="word-split">LA</span> <span class="word-split">RUTA</span> <span class="word-split">INFINITA</span></span>
+        </h1>
+
+        <p class="hero-subhead">
+          Una travesía cartográfica y sensorial desde los estratos ocres del Altiplano andino y la selva subtropical de Misiones, atravesando los cañones triásicos de Cuyo y los mares de hielo eterno de la Patagonia, hasta el confín austral de Ushuaia.
+        </p>
+
+        <div class="hero-bottom-bar">
+          <a href="#chapter-01" class="hero-chip">
+            <span class="chip-num">01</span>
+            <div class="chip-tx">
+              <span class="chip-title">Norte Mineral</span>
+              <span class="chip-desc">Jujuy & Salta</span>
+            </div>
+          </a>
+
+          <a href="#chapter-02" class="hero-chip">
+            <span class="chip-num">02</span>
+            <div class="chip-tx">
+              <span class="chip-title">Selva Verde</span>
+              <span class="chip-desc">Iguazú & Misiones</span>
+            </div>
+          </a>
+
+          <a href="#chapter-03" class="hero-chip">
+            <span class="chip-num">03</span>
+            <div class="chip-tx">
+              <span class="chip-title">Cañón Triásico</span>
+              <span class="chip-desc">Talampaya & Puna</span>
+            </div>
+          </a>
+
+          <a href="#chapter-04" class="hero-chip">
+            <span class="chip-num">04</span>
+            <div class="chip-tx">
+              <span class="chip-title">Reinos de Hielo</span>
+              <span class="chip-desc">Patagonia & Ushuaia</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chapter 01: El Norte Mineral (Jujuy & Salta) -->
+    <section class="chapter-section" id="chapter-01" data-chapter-index="1">
+      <div class="chapter-grid">
+        <div class="chapter-text-col">
+          <div class="chapter-folio">
+            <span class="folio-number">01 / V</span>
+            <span class="folio-label">PUNA ANDINA & QUEBRADA DE HUMAHUACA</span>
+          </div>
+
+          <h2 class="chapter-title" aria-label="El Cerro de los Siete Colores y las Salinas Grandes">
+            <span class="title-line"><span class="word-split">EL</span> <span class="word-split">CERRO</span> <span class="word-split">DE</span> <span class="word-split">LOS</span></span>
+            <span class="title-line"><span class="word-split">SIETE</span> <span class="word-split">COLORES</span></span>
+          </h2>
+
+          <p class="chapter-body-copy">
+            En el silencio mineral de la Quebrada de Humahuaca, los estratos sedimentarios de más de seiscientos millones de años componen una sinfonía de pigmentos naturales: ocres marinos, terracotas terciarias y calicantos andinos. En Purmamarca, las capillas de adobe colonial conviven con cardones centenarios, mientras más arriba, las Salinas Grandes extienden su manto de salitre blanco bajo un cielo cobalto de pureza absoluta.
+          </p>
+
+          <div class="chapter-spec-box">
+            <div class="spec-item">
+              <span class="spec-label">ALTITUD GEOGRÁFICA</span>
+              <span class="spec-val">+2.320 m a +3.450 m</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">COORDENADAS</span>
+              <span class="spec-val">23°44′48″S 65°29′57″W</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">BIOMA & PAISAJE</span>
+              <span class="spec-val">Estepa Puneña & Cañón Ocre</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">ACCESO EDITORIAL</span>
+              <span class="spec-val">Ruta 9 & Travesía Privada</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="chapter-cards-col">
+          <article class="editorial-card" data-dossier="purmamarca">
+            <div class="card-media-frame">
+              <img src="images/arg-norte-1.webp" alt="Purmamarca y Cerro de los Siete Colores en Jujuy" class="card-img" loading="lazy">
+              <div class="media-center-trigger" aria-label="Inspeccionar Placa">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+              </div>
+            </div>
+            <div class="card-content">
+              <span class="card-tag">PLACA I · PURMAMARCA</span>
+              <h3 class="card-title">Cerro de los Siete Colores</h3>
+              <p class="card-description">
+                Capilla de adobe del siglo XVII y patio empedrado bajo la pared multicolor de la Quebrada a primera luz del día.
+              </p>
+            </div>
+          </article>
+
+          <article class="editorial-card" data-dossier="salinas">
+            <div class="card-media-frame">
+              <img src="images/arg-norte-2.webp" alt="Salinas Grandes en Jujuy y Salta" class="card-img" loading="lazy">
+              <div class="media-center-trigger" aria-label="Inspeccionar Placa">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+              </div>
+            </div>
+            <div class="card-content">
+              <span class="card-tag">PLACA II · SALINAS GRANDES</span>
+              <h3 class="card-title">El Espejo de Salitre & Litio</h3>
+              <p class="card-description">
+                Piletones geométricos de salmuera turquesa reflejando el firmamento andino y los conos volcánicos del horizonte.
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chapter 02: El Jardín Subtropical (Misiones) -->
+    <section class="chapter-section" id="chapter-02" data-chapter-index="2">
+      <div class="chapter-grid reverse">
+        <div class="chapter-text-col">
+          <div class="chapter-folio">
+            <span class="folio-number">02 / V</span>
+            <span class="folio-label">LITORAL & BOSQUE ATLÁNTICO PARANAENSE</span>
+          </div>
+
+          <h2 class="chapter-title" aria-label="La Selva Misionera y las Cataratas del Iguazú">
+            <span class="title-line"><span class="word-split">LA</span> <span class="word-split">SELVA</span> <span class="word-split">MISIONERA</span></span>
+            <span class="title-line"><span class="word-split">&</span> <span class="word-split">GARGANTA</span> <span class="word-split">DEL</span> <span class="word-split">DIABLO</span></span>
+          </h2>
+
+          <p class="chapter-body-copy">
+            El murmullo atronador de doscientos setenta y cinco saltos de agua emerge en el corazón esmeralda de la selva virgen de Misiones. La Garganta del Diablo proyecta columnas de bruma volcánica y arcoíris perpetuos sobre la tierra roja, donde la densa canopia de helechos gigantes y lapachos abriga refugios de madera noble inmersos en la naturaleza más exuberante de América del Sur.
+          </p>
+
+          <div class="chapter-spec-box">
+            <div class="spec-item">
+              <span class="spec-label">ALTITUD GEOGRÁFICA</span>
+              <span class="spec-val">+195 m sobre el mar</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">COORDENADAS</span>
+              <span class="spec-val">25°41′43″S 54°26′12″W</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">CAUDAL FLUVIAL</span>
+              <span class="spec-val">1.500 a 2.200 m³/s</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">SANTUARIO BOTÁNICO</span>
+              <span class="spec-val">Reserva Yabotí & PN Iguazú</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="chapter-cards-col">
+          <article class="editorial-card" data-dossier="iguazu">
+            <div class="card-media-frame">
+              <img src="images/arg-litoral-1.webp" alt="Garganta del Diablo en Cataratas del Iguazú" class="card-img" loading="lazy">
+              <div class="media-center-trigger" aria-label="Inspeccionar Placa">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+              </div>
+            </div>
+            <div class="card-content">
+              <span class="card-tag">PLACA III · IGUAZÚ</span>
+              <h3 class="card-title">Garganta del Diablo</h3>
+              <p class="card-description">
+                Masas colosales de agua esmeralda y arcoíris sobre la muralla basáltica de la selva virgen subtropical.
+              </p>
+            </div>
+          </article>
+
+          <article class="editorial-card" data-dossier="yaboti">
+            <div class="card-media-frame">
+              <img src="images/arg-litoral-2.webp" alt="Ecolodge en la Selva Misionera" class="card-img" loading="lazy">
+              <div class="media-center-trigger" aria-label="Inspeccionar Placa">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+              </div>
+            </div>
+            <div class="card-content">
+              <span class="card-tag">PLACA IV · YABOTÍ</span>
+              <h3 class="card-title">Ecolodge en la Canopia</h3>
+              <p class="card-description">
+                Pasarelas de madera noble sobre el río cristalino y pabellones de vidrio iluminados en la noche selvática.
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chapter 03: Cañones & Gigantes Volcánicos (Cuyo & Catamarca) -->
+    <section class="chapter-section" id="chapter-03" data-chapter-index="3">
+      <div class="chapter-grid">
+        <div class="chapter-text-col">
+          <div class="chapter-folio">
+            <span class="folio-number">03 / V</span>
+            <span class="folio-label">CAÑONES TRIÁSICOS & DESIERTO PUNEÑO</span>
+          </div>
+
+          <h2 class="chapter-title" aria-label="Talampaya y el Campo de Piedra Pómez">
+            <span class="title-line"><span class="word-split">TALAMPAYA</span> <span class="word-split">&</span> <span class="word-split">EL</span></span>
+            <span class="title-line"><span class="word-split">CAMPO</span> <span class="word-split">DE</span> <span class="word-split">PIEDRA</span> <span class="word-split">PÓMEZ</span></span>
+          </h2>
+
+          <p class="chapter-body-copy">
+            El tiempo geológico se manifiesta con monumentalidad sagrada en los farallones verticales de arenisca roja de ciento cincuenta metros en Talampaya y las figuras lunares de Ischigualasto. Más al norte, en la puna catamarqueña de Antofagasta de la Sierra, el Campo de Piedra Pómez despliega un laberinto de olas blancas petrificadas por erupciones volcánicas milenarias, envuelto en un silencio absoluto.
+          </p>
+
+          <div class="chapter-spec-box">
+            <div class="spec-item">
+              <span class="spec-label">ALTITUD GEOGRÁFICA</span>
+              <span class="spec-val">+1.300 m a +3.050 m</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">COORDENADAS</span>
+              <span class="spec-val">29°48′11″S 67°59′42″W</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">ERA GEOLÓGICA</span>
+              <span class="spec-val">Triásico Medio (250 Ma)</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">FARALLONES</span>
+              <span class="spec-val">Arenisca Roja de 150 m</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="chapter-cards-col">
+          <article class="editorial-card" data-dossier="talampaya">
+            <div class="card-media-frame">
+              <img src="images/arg-cuyo-1.webp" alt="Cañón de Talampaya en La Rioja y San Juan" class="card-img" loading="lazy">
+              <div class="media-center-trigger" aria-label="Inspeccionar Placa">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+              </div>
+            </div>
+            <div class="card-content">
+              <span class="card-tag">PLACA V · TALAMPAYA</span>
+              <h3 class="card-title">Farallones del Triásico</h3>
+              <p class="card-description">
+                Murallones monumentales de arenisca roja encendidos por la luz rasante del atardecer cordillerano.
+              </p>
+            </div>
+          </article>
+
+          <article class="editorial-card" data-dossier="catamarca">
+            <div class="card-media-frame">
+              <img src="images/arg-cuyo-2.webp" alt="Campo de Piedra Pómez en Catamarca" class="card-img" loading="lazy">
+              <div class="media-center-trigger" aria-label="Inspeccionar Placa">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+              </div>
+            </div>
+            <div class="card-content">
+              <span class="card-tag">PLACA VI · ANTOFAGASTA</span>
+              <h3 class="card-title">Campo de Piedra Pómez</h3>
+              <p class="card-description">
+                Olas blancas de ceniza volcánica esculpidas por el viento sobre la arena oscura del Altiplano.
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chapter 04: Los Reinos de Hielo (Patagonia & Fitz Roy) -->
+    <section class="chapter-section" id="chapter-04" data-chapter-index="4">
+      <div class="chapter-grid reverse">
+        <div class="chapter-text-col">
+          <div class="chapter-folio">
+            <span class="folio-number">04 / V</span>
+            <span class="folio-label">PATAGONIA ANDINA & CAMPO DE HIELO SUR</span>
+          </div>
+
+          <h2 class="chapter-title" aria-label="Monte Fitz Roy y el Glaciar Perito Moreno">
+            <span class="title-line"><span class="word-split">MONTE</span> <span class="word-split">FITZ</span> <span class="word-split">ROY</span></span>
+            <span class="title-line"><span class="word-split">&</span> <span class="word-split">GLACIAR</span> <span class="word-split">PERITO</span> <span class="word-split">MORENO</span></span>
+          </h2>
+
+          <p class="chapter-body-copy">
+            En los confines australes de los Andes, las agujas verticales de granito del cerro Fitz Roy en El Chaltén cortan los vientos del oeste y se tiñen de fuego al amanecer. Hacia el sur, el Glaciar Perito Moreno avanza con estruendo sobre las aguas del Lago Argentino, desplegando una muralla de hielo azul zafiro de setenta metros de altura en un templo de pureza milenaria.
+          </p>
+
+          <div class="chapter-spec-box">
+            <div class="spec-item">
+              <span class="spec-label">ALTITUD GEOGRÁFICA</span>
+              <span class="spec-val">+180 m a +3.405 m</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">COORDENADAS</span>
+              <span class="spec-val">49°16′15″S 73°02′44″W</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">SUPERFICIE GLACIAR</span>
+              <span class="spec-val">250 km² en avance dinámico</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">MURALLA DE HIELO</span>
+              <span class="spec-val">70 m sobre el Lago Argentino</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="chapter-cards-col">
+          <article class="editorial-card" data-dossier="fitzroy">
+            <div class="card-media-frame">
+              <img src="images/arg-patagonia-1.webp" alt="Monte Fitz Roy y Laguna de los Tres en El Chaltén" class="card-img" loading="lazy">
+              <div class="media-center-trigger" aria-label="Inspeccionar Placa">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+              </div>
+            </div>
+            <div class="card-content">
+              <span class="card-tag">PLACA VII · EL CHALTÉN</span>
+              <h3 class="card-title">Monte Fitz Roy al Alba</h3>
+              <p class="card-description">
+                Agujas de granito iluminadas por el primer rayo de sol sobre los témpanos flotantes de la Laguna de los Tres.
+              </p>
+            </div>
+          </article>
+
+          <article class="editorial-card" data-dossier="peritomoreno">
+            <div class="card-media-frame">
+              <img src="images/arg-patagonia-2.webp" alt="Glaciar Perito Moreno en El Calafate" class="card-img" loading="lazy">
+              <div class="media-center-trigger" aria-label="Inspeccionar Placa">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+              </div>
+            </div>
+            <div class="card-content">
+              <span class="card-tag">PLACA VIII · PERITO MORENO</span>
+              <h3 class="card-title">Muralla de Hielo Zafiro</h3>
+              <p class="card-description">
+                Desprendimientos glaciares y seracs azul cobalto cayendo sobre las aguas del Brazo Rico en el Lago Argentino.
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chapter 05: El Fin del Mundo (Ushuaia & Tierra del Fuego) -->
+    <section class="chapter-section" id="chapter-05" data-chapter-index="5">
+      <div class="chapter-grid">
+        <div class="chapter-text-col">
+          <div class="chapter-folio">
+            <span class="folio-number">05 / V</span>
+            <span class="folio-label">FINIS TERRAE & CANAL BEAGLE</span>
+          </div>
+
+          <h2 class="chapter-title" aria-label="Ushuaia y el Faro del Fin del Mundo">
+            <span class="title-line"><span class="word-split">USHUAIA,</span> <span class="word-split">EL</span> <span class="word-split">FARO</span></span>
+            <span class="title-line"><span class="word-split">&</span> <span class="word-split">TIERRA</span> <span class="word-split">DEL</span> <span class="word-split">FUEGO</span></span>
+          </h2>
+
+          <p class="chapter-body-copy">
+            Donde la cordillera de los Andes se sumerge finalmente en las aguas del Océano Austral, el Faro Les Éclaireurs custodia los islotes rocosos del Canal Beagle. Los bosques subantárticos de lengas enrojecidas, turbales milenarios y el muelle solitario de Bahía Lapataia despiden el continente bajo cielos crepusculares cargados de leyendas marinas y la luz de la Cruz del Sur.
+          </p>
+
+          <div class="chapter-spec-box">
+            <div class="spec-item">
+              <span class="spec-label">ALTITUD GEOGRÁFICA</span>
+              <span class="spec-val">+0 m (Nivel del Mar Austral)</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">COORDENADAS</span>
+              <span class="spec-val">54°48′26″S 68°18′14″W</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">BALIZA MARÍTIMA</span>
+              <span class="spec-val">Faro Les Éclaireurs (1920)</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">LÍMITE CONTINENTAL</span>
+              <span class="spec-val">Paso Moat & Bahía Lapataia</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="chapter-cards-col">
+          <article class="editorial-card" data-dossier="ushuaia">
+            <div class="card-media-frame">
+              <img src="images/arg-ushuaia-1.webp" alt="Faro Les Éclaireurs en el Canal Beagle Ushuaia" class="card-img" loading="lazy">
+              <div class="media-center-trigger" aria-label="Inspeccionar Placa">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+              </div>
+            </div>
+            <div class="card-content">
+              <span class="card-tag">PLACA IX · CANAL BEAGLE</span>
+              <h3 class="card-title">Faro Les Éclaireurs</h3>
+              <p class="card-description">
+                Centinela solitario entre cormoranes y montes nevados en el confín marítimo de Tierra del Fuego.
+              </p>
+            </div>
+          </article>
+
+          <article class="editorial-card" data-dossier="lapataia">
+            <div class="card-media-frame">
+              <img src="images/arg-ushuaia-2.webp" alt="Bahía Lapataia en Tierra del Fuego" class="card-img" loading="lazy">
+              <div class="media-center-trigger" aria-label="Inspeccionar Placa">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+              </div>
+            </div>
+            <div class="card-content">
+              <span class="card-tag">PLACA X · BAHÍA LAPATAIA</span>
+              <h3 class="card-title">El Fin del Camino</h3>
+              <p class="card-description">
+                Muelle de madera sobre el fiordo austral rodeado de bosques otoñales de lenga y montañas subantárticas.
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Curated Itineraries Section -->
+    <section class="curated-section" id="curated-journeys" data-chapter-index="6">
+      <div class="curated-header">
+        <span class="folio-label">CURADURÍA DE AUTOR · EXPEDICIONES PRIVADAS</span>
+        <h2 class="curated-title">Travesías Exclusivas por Argentina</h2>
+        <p class="curated-desc">
+          Diseñamos viajes monográficos irrepetibles con acceso exclusivo, transporte aéreo privado, estancias históricas y guías de expedición dedicados.
+        </p>
+      </div>
+
+      <div class="curated-grid">
+        <article class="curated-journey-card">
+          <div class="journey-badge">TRAVESÍA 01 · 12 DÍAS</div>
+          <h3 class="journey-title">Ruta 40 Andina & Viñedos de Altura</h3>
+          <p class="journey-route">Salta · Quebrada de Humahuaca · Cachi · Cafayate · Catamarca</p>
+          <p class="journey-desc">
+            Expedición privada por los caminos de cornisa del Altiplano, sobrevuelos en globo sobre los Siete Colores y catas exclusivas en bodegas centenarias a 2.500 metros.
+          </p>
+          <div class="journey-meta">
+            <span>TEMPORADA: MARZO — NOVIEMBRE</span>
+            <span>CAPACIDAD: HASTA 6 HUÉSPEDES</span>
+          </div>
+          <a href="#commission" class="btn-journey-inquire">Solicitar Dossier</a>
+        </article>
+
+        <article class="curated-journey-card highlight">
+          <div class="journey-badge">TRAVESÍA 02 · 14 DÍAS</div>
+          <h3 class="journey-title">Reinos de Hielo & Fin del Mundo</h3>
+          <p class="journey-route">El Calafate · El Chaltén · Estancia Cristina · Canal Beagle · Ushuaia</p>
+          <p class="journey-desc">
+            Navegación privada en velero por los canales fueguinos, trekking sobre el Glaciar Perito Moreno y refugio de lujo frente a las agujas del Monte Fitz Roy.
+          </p>
+          <div class="journey-meta">
+            <span>TEMPORADA: OCTUBRE — ABRIL</span>
+            <span>CAPACIDAD: HASTA 8 HUÉSPEDES</span>
+          </div>
+          <a href="#commission" class="btn-journey-inquire">Solicitar Dossier</a>
+        </article>
+
+        <article class="curated-journey-card">
+          <div class="journey-badge">TRAVESÍA 03 · 10 DÍAS</div>
+          <h3 class="journey-title">Santuarios del Agua & Selva Fluvial</h3>
+          <p class="journey-route">Cataratas del Iguazú · Reserva Yabotí · Esteros del Iberá</p>
+          <p class="journey-desc">
+            Acceso nocturno privado a la Garganta del Diablo bajo la luna llena, safari fotográfico en lancha por los humedales del Iberá y estadía en ecolodge de selva virgen.
+          </p>
+          <div class="journey-meta">
+            <span>TEMPORADA: TODO EL AÑO</span>
+            <span>CAPACIDAD: HASTA 6 HUÉSPEDES</span>
+          </div>
+          <a href="#commission" class="btn-journey-inquire">Solicitar Dossier</a>
+        </article>
+      </div>
+    </section>
+
+    <!-- Atelier Commission Form Section -->
+    <section class="commission-section" id="commission" data-chapter-index="7">
+      <div class="commission-wrapper">
+        <div class="commission-header">
+          <span class="folio-label">ATELIER DE VIAJES A MEDIDA</span>
+          <h2 class="commission-title">Comisionar una Travesía por Argentina</h2>
+          <p class="commission-subtitle">
+            Cada itinerario es una obra editorial única curada meticulosamente por nuestro equipo de cartógrafos y expertos locales.
+          </p>
+        </div>
+
+        <form class="stationery-form" id="commission-form" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="client-name" class="form-label">NOMBRE Y APELLIDO</label>
+              <input type="text" id="client-name" name="name" class="form-input" placeholder="p. ej. María Elena Richards" required>
+            </div>
+            <div class="form-group">
+              <label for="client-email" class="form-label">CORREO ELECTRÓNICO PRIVADO</label>
+              <input type="email" id="client-email" name="email" class="form-input" placeholder="richards@atelier.com" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="client-region" class="form-label">REGIÓN DE PREFERENCIA</label>
+              <select id="client-region" name="region" class="form-input form-select">
+                <option value="norte">01 · Norte Mineral (Jujuy, Salta & Puna)</option>
+                <option value="litoral">02 · Litoral & Selva (Iguazú & Misiones)</option>
+                <option value="cuyo">03 · Cañones & Valles (Talampaya, San Juan & Catamarca)</option>
+                <option value="patagonia">04 · Patagonia Glaciar (Fitz Roy & El Calafate)</option>
+                <option value="ushuaia">05 · Fin del Mundo (Canal Beagle & Ushuaia)</option>
+                <option value="integral">06 · Travesía Integral Norte a Sur (21 Días)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="client-guests" class="form-label">NÚMERO DE VIAJEROS</label>
+              <input type="number" id="client-guests" name="guests" class="form-input" min="1" max="16" placeholder="2">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="client-notes" class="form-label">VISIÓN DEL VIAJE & REQUERIMIENTOS ESPECIALES</label>
+            <textarea id="client-notes" name="notes" class="form-input form-textarea" rows="4" placeholder="Detalle fechas deseadas, afinidad por aviación privada, fotografía de paisaje, gastronomía de autor o estancias históricas..."></textarea>
+          </div>
+
+          <button type="submit" class="btn-submit-commission">
+            <span>ENVIAR SOLICITUD AL ATELIER</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+
+          <div class="form-status" id="form-status" aria-live="polite"></div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Archival Colophon & Provenance -->
+    <footer class="monograph-colophon">
+      <div class="colophon-grid">
+        <div class="colophon-block">
+          <span class="colophon-heading">ATELIER EDITORIAL</span>
+          <p>Nomad & Nook · Edición Monográfica Argentina</p>
+          <p>Curaduría de Expediciones Privadas & Cartografía Austral</p>
+        </div>
+        <div class="colophon-block">
+          <span class="colophon-heading">CARTOGRAFÍA & RUTAS</span>
+          <p>Quebrada de Humahuaca · Misiones · Cuyo · El Chaltén · Ushuaia</p>
+          <p>Parques Nacionales & Reservas Naturales de la República Argentina</p>
+        </div>
+        <div class="colophon-block">
+          <span class="colophon-heading">TIPOGRAFÍA & DISEÑO</span>
+          <p>Didot Classical Serif & San Francisco Monospaced</p>
+          <p>Diseño sin dependencias externas · 100% Nativo</p>
+        </div>
+        <div class="colophon-block">
+          <span class="colophon-heading">EDICIÓN LIMITADA</span>
+          <p>© 2026 Nomad & Nook. Todos los derechos reservados.</p>
+          <p>Edición Coleccionista N° 842 / 1.000</p>
+        </div>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- Interactive Dossier Modal Dialog -->
+  <dialog id="dossier-modal" class="dossier-dialog" aria-labelledby="modal-title">
+    <div class="modal-surface">
+      <button class="modal-close-btn" id="modal-close" type="button" aria-label="Cerrar Dossier">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+      <div class="modal-body" id="modal-body-content">
+        <!-- Content injected dynamically via editorial.js -->
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Local Script Architecture (Zero External CDN Calls) -->
+  <script src="js/three.min.js"></script>
+  <script src="js/experience3d.js"></script>
+  <script src="js/scroll-conductor.js"></script>
+  <script src="js/scroll.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/editorial.js"></script>
+</body>
+</html>

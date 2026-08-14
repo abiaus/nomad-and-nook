@@ -1,0 +1,382 @@
+/* =========================================================================
+   Nomad & Nook — Chapter Layouts & Editorial Spreads
+   ========================================================================= */
+
+/* Hero Section */
+.hero-section {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(6rem, 12vh, 9rem) var(--site-padding-x) clamp(2rem, 5vh, 4rem);
+  max-width: var(--site-max-width);
+  margin: 0 auto;
+  position: relative;
+}
+
+.hero-main-content {
+  max-width: 960px;
+  margin-top: auto;
+  margin-bottom: auto;
+  background: rgba(8, 12, 16, 0.65);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(248, 246, 240, 0.14);
+  padding: clamp(2rem, 4.5vw, 3.5rem);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+}
+
+.hero-issue-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 2rem;
+}
+
+.hero-issue-badge .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--terracotta-500);
+}
+
+.hero-subhead {
+  margin-top: 1.5rem;
+  max-width: 620px;
+}
+
+.hero-bottom-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(1rem, 2.5vw, 2.5rem);
+  border-top: 1px solid var(--bone-hairline);
+  padding-top: 2rem;
+  background: rgba(8, 12, 16, 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 1.5rem clamp(1rem, 2.5vw, 2.5rem);
+  border: 1px solid rgba(248, 246, 240, 0.10);
+  margin-top: 2rem;
+}
+
+.hero-chip {
+  display: flex;
+  gap: 1.2rem;
+  align-items: flex-start;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.4s var(--ease-editorial);
+  padding: 0.5rem 0;
+}
+
+.hero-chip .chip-num {
+  font-family: var(--font-mono);
+  font-size: 1.6rem;
+  font-weight: 300;
+  line-height: 1;
+  color: var(--terracotta-500);
+  transition: transform 0.4s ease, color 0.4s ease;
+}
+
+.hero-chip .chip-tx {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.hero-chip .chip-title {
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sand-200);
+  transition: color 0.3s ease;
+}
+
+.hero-chip .chip-desc {
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--bone-dim);
+}
+
+.hero-chip:hover .chip-num {
+  color: var(--sand-100);
+  transform: translateY(-3px);
+}
+
+.hero-chip:hover .chip-title {
+  color: #fff;
+}
+
+/* Chapter Split Layout (Grid) */
+.chapter-section {
+  min-height: 140vh;
+  display: flex;
+  align-items: center;
+  padding: var(--site-padding-y) var(--site-padding-x);
+  max-width: var(--site-max-width);
+  margin: 0 auto;
+  position: relative;
+}
+
+.chapter-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: clamp(2rem, 6vw, 6rem);
+  width: 100%;
+  align-items: center;
+}
+
+.chapter-grid.reverse {
+  grid-template-columns: 0.85fr 1.15fr;
+}
+
+.chapter-grid.reverse .chapter-text-col {
+  order: 2;
+}
+
+.chapter-grid.reverse .chapter-cards-col {
+  order: 1;
+}
+
+/* Text Column */
+.chapter-text-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 620px;
+  background: rgba(8, 12, 16, 0.70);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(248, 246, 240, 0.14);
+  padding: clamp(2rem, 3.5vw, 3rem);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+}
+
+.chapter-folio {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.chapter-folio .folio-number {
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  color: var(--terracotta-500);
+}
+
+.chapter-folio .folio-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sand-400);
+}
+
+.chapter-body-copy {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--bone-dim);
+}
+
+.chapter-spec-box {
+  margin-top: 1rem;
+  padding: 1.5rem;
+  background: rgba(18, 24, 32, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--bone-hairline);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.2rem;
+  font-feature-settings: "kern" 1, "zero" 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.spec-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.spec-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sand-400);
+}
+
+.spec-val {
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  color: var(--bone);
+  font-weight: 400;
+}
+
+/* Cards Column — Asymmetrical Monograph Stagger */
+.chapter-cards-col {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  width: 100%;
+}
+
+.chapter-cards-col .editorial-card:nth-child(2) {
+  margin-top: -1.2rem;
+  margin-left: 2rem;
+  width: calc(100% - 2rem);
+}
+
+.chapter-grid.reverse .chapter-cards-col .editorial-card:nth-child(2) {
+  margin-left: 0;
+  margin-right: 2rem;
+}
+
+/* Editorial Card & Museum Passpartout Matting */
+.editorial-card {
+  position: relative;
+  background: rgba(8, 12, 16, 0.72);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(248, 246, 240, 0.14);
+  padding: 1.5rem;
+  transition: transform 0.6s var(--ease-editorial),
+              border-color 0.4s ease,
+              background 0.4s ease,
+              box-shadow 0.4s ease;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+}
+
+.editorial-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(237, 231, 216, 0.40);
+  background: rgba(8, 12, 16, 0.85);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.65);
+}
+
+.card-media-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  margin-bottom: 1.2rem;
+  background-color: var(--slate-800);
+  /* Museum Passpartout Inset Border */
+  outline: 1px solid rgba(248, 246, 240, 0.12);
+  outline-offset: -8px;
+}
+
+.editorial-card:nth-child(2) .card-media-frame {
+  aspect-ratio: 4 / 3;
+}
+
+.card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1.2s var(--ease-editorial), filter 0.8s ease;
+  filter: brightness(0.92) contrast(1.05);
+}
+
+.editorial-card:hover .card-img {
+  transform: scale(1.04);
+  filter: brightness(1.02) contrast(1.08);
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.card-tag {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--terracotta-400);
+}
+
+.card-title {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 300;
+  line-height: 1.25;
+  color: var(--bone);
+}
+
+.card-description {
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--bone-dim);
+}
+
+/* Archival Media Center Inspect Trigger */
+.media-center-trigger {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(6, 9, 13, 0.65);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--bone-faint);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--bone);
+  transition: all 0.4s var(--ease-editorial);
+  z-index: 2;
+  cursor: pointer;
+}
+
+.editorial-card:hover .media-center-trigger {
+  transform: translate(-50%, -50%) scale(1.15);
+  background: var(--terracotta-500);
+  border-color: var(--bone);
+  color: #fff;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1024px) {
+  .hero-bottom-bar {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .chapter-grid,
+  .chapter-grid.reverse {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .chapter-grid.reverse .chapter-text-col {
+    order: 1;
+  }
+
+  .chapter-grid.reverse .chapter-cards-col {
+    order: 2;
+  }
+
+  .chapter-cards-col .editorial-card:nth-child(2) {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .chapter-grid.reverse .chapter-cards-col .editorial-card:nth-child(2) {
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-bottom-bar {
+    grid-template-columns: 1fr;
+  }
+
+  .chapter-spec-box {
+    grid-template-columns: 1fr;
+  }
+}

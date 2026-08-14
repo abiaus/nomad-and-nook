@@ -1,0 +1,12 @@
+# Unused legacy files
+videos/video-alpine.mp4
+videos/video-coast.mp4
+videos/video-sanctum.mp4
+videos/video-twilight.mp4
+images/editorial-*
+images/fg-*
+images/curated-*
+
+# Python
+__pycache__/
+*.pyc

@@ -1,0 +1,356 @@
+/* =========================================================================
+   Nomad & Nook — Global Art Book Design System
+   Architecture: Zero External Dependencies, Pure Vanilla CSS
+   ========================================================================= */
+
+:root {
+  /* Ultra-Luxury Editorial Color Palette */
+  --slate-900: #06090d;
+  --slate-800: #0b0f14;
+  --slate-700: #121820;
+  --slate-600: #1a222c;
+  --slate-500: #25303e;
+
+  --sand-50:  #fdfcf7;
+  --sand-100: #f7f4ec;
+  --sand-200: #ede7d8;
+  --sand-300: #dcd3bd;
+  --sand-400: #c5b89a;
+  --sand-500: #a89874;
+
+  --terracotta-400: #e07354;
+  --terracotta-500: #c85a3b;
+  --terracotta-600: #a64327;
+
+  --olive-bronze-400: #9e9367;
+  --olive-bronze-500: #7e744a;
+  --olive-bronze-600: #5f5734;
+
+  --bone: #f8f6f0;
+  --bone-dim: rgba(248, 246, 240, 0.65);
+  --bone-faint: rgba(248, 246, 240, 0.28);
+  --bone-hairline: rgba(248, 246, 240, 0.12);
+
+  /* Typography Stack */
+  --font-serif: "Didot", "Bodoni MT", "Bodoni 72", "Cormorant Garamond", "Playfair Display", "Baskerville", "Georgia", serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "SF Mono", "Cascadia Code", "Fira Code", "Courier New", monospace;
+  --font-display-accent: "Italianno", "Alex Brush", "Playfair Display Italic", "Baskerville", serif;
+
+  /* Editorial Layout Grid & Pacing */
+  --site-max-width: 1480px;
+  --site-padding-x: clamp(1.5rem, 5vw, 6rem);
+  --site-padding-y: clamp(4rem, 8vw, 8rem);
+  --ease-editorial: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Reset & Box Sizing */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  background-color: var(--slate-900);
+  color: var(--bone);
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  position: relative;
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* Fixed WebGL Canvas Environmental Layer */
+#webgl-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Background Video Stage Layer */
+#video-background-stage {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background-color: var(--slate-900);
+}
+
+.bg-video-track {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: 100vw;
+  height: 100vh;
+  transform: translate(-50%, -50%) scale(1.03);
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1.4s var(--ease-editorial), transform 12s cubic-bezier(0.1, 0.9, 0.2, 1);
+  filter: brightness(0.82) contrast(1.10) saturate(1.12);
+  will-change: opacity, transform;
+}
+
+.bg-video-track.is-active {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1.0);
+}
+
+/* Vignette Overlay Layer */
+.vignette-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at center,
+    transparent 35%,
+    rgba(6, 9, 13, 0.45) 75%,
+    rgba(6, 9, 13, 0.85) 100%
+  );
+}
+
+/* Film Grain Texture Overlay */
+.noise-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0.045;
+  background-image: url('../images/noise.png');
+  background-repeat: repeat;
+}
+
+/* MengTo Progressive Stepped Blur Masks *.gradient-blur-top {
+  position: fixed;
+  z-index: 2;
+  inset: 0 0 auto 0;
+  height: 12vh;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.gradient-blur-bottom {
+  display: none; /* Removed heavy bottom blur that caused foggy footer */
+}
+
+/* Master Editorial Content Layer */
+#monograph-flow,
+#content-layer {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+}
+}
+
+/* Typographic Display Classes */
+.heading-hero {
+  font-family: var(--font-serif);
+  font-size: clamp(3.2rem, 8vw, 7.5rem);
+  font-weight: 300;
+  line-height: 0.95;
+  letter-spacing: -0.025em;
+  color: var(--bone);
+  text-transform: uppercase;
+}
+
+.heading-display {
+  font-family: var(--font-serif);
+  font-size: clamp(2.4rem, 5.5vw, 4.8rem);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: 0.04em;
+  color: var(--bone);
+}
+
+.heading-lead {
+  font-family: var(--font-serif);
+  font-size: clamp(1.4rem, 2.5vw, 2.2rem);
+  font-weight: 300;
+  line-height: 1.35;
+  color: var(--sand-200);
+}
+
+.heading-script-accent {
+  font-family: var(--font-display-accent);
+  font-size: clamp(1.6rem, 3.2vw, 3.0rem);
+  font-weight: 400;
+  color: var(--terracotta-400);
+  display: block;
+  margin-bottom: 0.25rem;
+  letter-spacing: 0.02em;
+}
+
+.technical-meta {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sand-400);
+  font-feature-settings: "kern" 1, "zero" 1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Hairline Accents */
+.hairline-rule {
+  height: 1px;
+  background-color: var(--bone-hairline);
+  border: none;
+  margin: 1.5rem 0;
+}
+
+.hairline-rule-accent {
+  height: 1px;
+  background: linear-gradient(to right, var(--terracotta-500), transparent);
+  border: none;
+  margin: 1.5rem 0;
+}
+
+/* Editorial Word-Reveal Animation Engine */
+.word-reveal-group {
+  display: inline;
+}
+
+.word-reveal-wrap {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+}
+
+.word-reveal-item {
+  display: inline-block;
+  transform: translateY(115%);
+  opacity: 0;
+  transition: transform 0.95s var(--ease-editorial),
+              opacity 0.75s var(--ease-editorial);
+  will-change: transform, opacity;
+}
+
+.word-reveal.is-revealed .word-reveal-item {
+  transform: translateY(0%);
+  opacity: 1;
+}
+
+/* Custom Fine-Pointer Magnetic Cursor */
+@media (pointer: fine) {
+  body {
+    cursor: none;
+  }
+
+  a, button, input, select, textarea {
+    cursor: none;
+  }
+
+  #custom-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .cursor-dot {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--sand-100);
+    margin-left: -3px;
+    margin-top: -3px;
+    will-change: transform;
+  }
+
+  .cursor-ring {
+    position: absolute;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--terracotta-500);
+    margin-left: -22px;
+    margin-top: -22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: width 0.35s var(--ease-out),
+                height 0.35s var(--ease-out),
+                margin 0.35s var(--ease-out),
+                background-color 0.35s var(--ease-out),
+                border-color 0.35s var(--ease-out);
+    will-change: transform;
+  }
+
+  .cursor-label {
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    color: var(--bone);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+
+  #custom-cursor.hovering-interactive .cursor-ring {
+    width: 68px;
+    height: 68px;
+    margin-left: -34px;
+    margin-top: -34px;
+    background-color: rgba(200, 90, 59, 0.22);
+    border-color: var(--sand-200);
+    backdrop-filter: blur(4px);
+  }
+
+  #custom-cursor.hovering-interactive .cursor-label {
+    opacity: 1;
+  }
+}
+
+@media (pointer: coarse) {
+  #custom-cursor {
+    display: none !important;
+  }
+}
+
+/* Reduced Motion Safety */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .word-reveal-item {
+    transform: none !important;
+    opacity: 1 !important;
+    transition: none !important;
+  }
+
+  .fg-silhouette {
+    transition: none !important;
+  }
+}
