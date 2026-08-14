@@ -88,9 +88,13 @@
       if (hudElevation && hudElevation.textContent !== biome.elev) hudElevation.textContent = biome.elev;
       if (hudBiome && hudBiome.textContent !== biome.name) hudBiome.textContent = biome.name;
 
-      const liveHud = document.querySelector('.live-coords-hud');
-      if (liveHud) {
-        liveHud.classList.toggle('is-hidden', state.smoothIndex >= 6.2);
+      // 4. Smooth Fade for Scroll Invitation
+      const scrollInv = document.querySelector('.scroll-invitation');
+      if (scrollInv) {
+        const heroOpacity = Math.max(0, 1 - state.smoothIndex * 2.5);
+        scrollInv.style.opacity = heroOpacity;
+        scrollInv.style.pointerEvents = heroOpacity <= 0.05 ? 'none' : 'auto';
+        scrollInv.style.transform = 'translateY(' + (state.smoothIndex * 15) + 'px)';
       }
     },
     onChapterChange: function (index, state) {
